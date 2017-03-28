@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AirPanelLinearLayout">
+        <attr name="airPanelMinHeight" format="dimension" />
+        <attr name="airPanelMaxHeight" format="dimension" />
+    </declare-styleable>
+</resources>

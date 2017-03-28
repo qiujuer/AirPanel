@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Sample</string>
+    <string name="txt_input_tint">Type something to send…</string>
+</resources>
