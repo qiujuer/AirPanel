@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="@string/app_name" />
+        android:text="@string/txt_content" />
 
     <LinearLayout
         android:id="@+id/lay_option"
@@ -41,9 +41,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@null"
+            android:hint="@string/txt_input_tint"
             android:lineSpacingExtra="0dp"
             android:lineSpacingMultiplier="1"
-            android:hint="@string/txt_input_tint"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <ImageView
@@ -62,7 +62,7 @@
         android:id="@+id/airPanelSubLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey_200"
+        android:background="@color/green_50"
         android:paddingTop="1px"
         android:visibility="gone">
 
@@ -72,7 +72,7 @@
             android:layout_gravity="center"
             android:background="@color/amber_a100"
             android:gravity="center"
-            android:text="@string/app_name" />
+            android:text="@string/txt_face_panel" />
     </net.qiujuer.widget.airpanel.AirPanelLinearLayout>
 
 </net.qiujuer.widget.airpanel.AirPanelLinearLayout>

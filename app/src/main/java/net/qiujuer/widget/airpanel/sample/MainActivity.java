@@ -45,4 +45,13 @@ public class MainActivity extends AppCompatActivity {
             mPanelBoss.openPanel();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (mPanelBoss.isOpen()) {
+            mPanelBoss.closePanel();
+            return;
+        }
+        super.onBackPressed();
+    }
 }
