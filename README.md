@@ -1,2 +1,2 @@
 # AirPanel
-Help soft keyboard and expression panel switch.
+Help soft keyboard and face panel switch.
