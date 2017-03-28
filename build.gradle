@@ -12,12 +12,36 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+    id "com.github.dcendents.android-maven" version "1.5"
+}
+
 allprojects {
+
+    version = VERSION_NAME
+    group = POM_GROUP_ID
+
     repositories {
         jcenter()
     }
 }
 
+/*
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+*/
+
+def static int getVersionCode() {
+    def date = new Date()
+    def formattedDate = date.format('yyMMddHHmm')
+    return formattedDate as int
+}
+
+ext {
+    versionCode = getVersionCode()
+    versionName = VERSION_NAME
+}
+
+apply plugin: 'android-reporting'
