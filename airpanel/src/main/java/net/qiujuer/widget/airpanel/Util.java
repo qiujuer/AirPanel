@@ -17,7 +17,7 @@ public final class Util {
 
     public static void log(String format, Object... args) {
         if (DEBUG)
-            Log.d("AirPanel", String.format(format, args));
+            Log.e("AirPanel", String.format(format, args));
     }
 
     public static void showKeyboard(final View view) {

@@ -7,8 +7,8 @@ import android.app.Activity;
  * @version 1.0.0
  */
 
-interface Contract extends AirPanel.Boss {
-    interface Panel extends AirPanel.Boss {
+interface Contract {
+    interface Panel extends AirPanel {
         void adjustPanelHeight(int heightMeasureSpec);
     }
 

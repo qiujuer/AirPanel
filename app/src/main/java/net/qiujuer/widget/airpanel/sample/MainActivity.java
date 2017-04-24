@@ -10,24 +10,22 @@ import net.qiujuer.widget.airpanel.Util;
 
 public class MainActivity extends AppCompatActivity {
     private EditText mContent;
-    private AirPanel.Boss mPanelBoss;
+    private AirPanel mAirPanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         mContent = (EditText) findViewById(R.id.edit_content);
 
-        mPanelBoss = (AirPanel.Boss) findViewById(R.id.lay_container);
-        mPanelBoss.setPanelListener(new AirPanel.Listener() {
+        mAirPanel = (AirPanel) findViewById(R.id.airPanelLayout);
+        mAirPanel.setPanelListener(new AirPanel.Listener() {
             @Override
             public void requestHideSoftKeyboard() {
                 Util.hideKeyboard(mContent);
             }
         });
-
 
         findViewById(R.id.btn_face).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,17 +37,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onFaceClick() {
-        if (mPanelBoss.isOpen()) {
+        if (mAirPanel.isOpen()) {
             Util.showKeyboard(mContent);
         } else {
-            mPanelBoss.openPanel();
+            mAirPanel.openPanel();
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (mPanelBoss.isOpen()) {
-            mPanelBoss.closePanel();
+        if (mAirPanel.isOpen()) {
+            mAirPanel.closePanel();
             return;
         }
         super.onBackPressed();

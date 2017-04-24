@@ -77,6 +77,11 @@ public class AirPanelLinearLayout extends LinearLayout implements Contract.Panel
     }
 
     @Override
+    public void setOnStateChangedListener(OnStateChangedListener listener) {
+        mDelegate.setOnStateChangedListener(listener);
+    }
+
+    @Override
     public void adjustPanelHeight(int heightMeasureSpec) {
         mDelegate.adjustPanelHeight(heightMeasureSpec);
     }

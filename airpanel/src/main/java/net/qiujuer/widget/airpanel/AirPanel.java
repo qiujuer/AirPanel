@@ -6,19 +6,23 @@ package net.qiujuer.widget.airpanel;
  */
 
 public interface AirPanel {
-    interface Sub {
-        void openPanel();
-
-        void closePanel();
-
-        boolean isOpen();
-    }
-
-    interface Boss extends Sub {
-        void setPanelListener(Listener listener);
-    }
-
     interface Listener {
         void requestHideSoftKeyboard();
     }
+
+    interface OnStateChangedListener {
+        void onSoftKeyboardStateChanged(boolean isOpen);
+
+        void onAirPanelStateChanged(boolean isOpen);
+    }
+
+    void openPanel();
+
+    void closePanel();
+
+    boolean isOpen();
+
+    void setPanelListener(Listener listener);
+
+    void setOnStateChangedListener(OnStateChangedListener listener);
 }
