@@ -2,6 +2,7 @@ package net.qiujuer.widget.airpanel.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -21,10 +22,21 @@ public class MainActivity extends AppCompatActivity {
         mContent = (EditText) findViewById(R.id.edit_content);
 
         mPanelBoss = (AirPanel.Boss) findViewById(R.id.lay_container);
-        mPanelBoss.setPanelListener(new AirPanel.Listener() {
+        mPanelBoss.setup(new AirPanel.PanelListener() {
             @Override
             public void requestHideSoftKeyboard() {
                 Util.hideKeyboard(mContent);
+            }
+        });
+        mPanelBoss.setOnStateChangedListener(new AirPanel.OnStateChangedListener() {
+            @Override
+            public void onPanelStateChanged(boolean isOpen) {
+                Log.e("TAG", "onPanelStateChanged:" + isOpen);
+            }
+
+            @Override
+            public void onSoftKeyboardStateChanged(boolean isOpen) {
+                Log.e("TAG", "onSoftKeyboardStateChanged:" + isOpen);
             }
         });
 

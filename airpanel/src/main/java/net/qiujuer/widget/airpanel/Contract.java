@@ -12,7 +12,7 @@ interface Contract extends AirPanel.Boss {
         void adjustPanelHeight(int heightMeasureSpec);
     }
 
-    interface Helper extends Panel, AirPanel.Listener {
+    interface Helper extends Panel, AirPanel.PanelListener {
         int calculateHeightMeasureSpec(int heightMeasureSpec);
 
         void setup(Activity activity);

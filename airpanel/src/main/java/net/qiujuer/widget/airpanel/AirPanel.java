@@ -15,10 +15,18 @@ public interface AirPanel {
     }
 
     interface Boss extends Sub {
-        void setPanelListener(Listener listener);
+        void setup(PanelListener panelListener);
+
+        void setOnStateChangedListener(OnStateChangedListener listener);
     }
 
-    interface Listener {
+    interface PanelListener {
         void requestHideSoftKeyboard();
+    }
+
+    interface OnStateChangedListener {
+        void onPanelStateChanged(boolean isOpen);
+
+        void onSoftKeyboardStateChanged(boolean isOpen);
     }
 }

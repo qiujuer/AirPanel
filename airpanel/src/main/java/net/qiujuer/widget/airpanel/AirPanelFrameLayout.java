@@ -5,31 +5,30 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 
 /**
  * @author qiujuer Email:qiujuer@live.cn
  * @version 1.0.0
  */
-
-public class AirPanelLinearLayout extends LinearLayout implements Contract.Panel {
+public class AirPanelFrameLayout extends FrameLayout implements Contract.Panel {
     private Contract.Helper mDelegate;
 
-    public AirPanelLinearLayout(Context context) {
+    public AirPanelFrameLayout(Context context) {
         this(context, null);
     }
 
-    public AirPanelLinearLayout(Context context, AttributeSet attrs) {
+    public AirPanelFrameLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public AirPanelLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public AirPanelFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs, defStyleAttr, 0);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public AirPanelLinearLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public AirPanelFrameLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs, defStyleAttr, defStyleRes);
     }

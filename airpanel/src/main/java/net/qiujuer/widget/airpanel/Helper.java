@@ -15,7 +15,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 final class Helper implements Contract.Helper {
     private Contract.Helper mTarget;
-    private AirPanel.Listener mListenerTmp;
+    private AirPanel.PanelListener mPanelListenerTmp;
+    private AirPanel.OnStateChangedListener mOnStateChangedListenerTmp;
     private View mView;
     private AirAttribute mAttribute;
 
@@ -42,10 +43,17 @@ final class Helper implements Contract.Helper {
     }
 
     @Override
-    public void setPanelListener(AirPanel.Listener listener) {
+    public void setup(AirPanel.PanelListener panelListener) {
         if (mTarget == null)
-            this.mListenerTmp = listener;
-        else mTarget.setPanelListener(listener);
+            this.mPanelListenerTmp = panelListener;
+        else mTarget.setup(panelListener);
+    }
+
+    @Override
+    public void setOnStateChangedListener(AirPanel.OnStateChangedListener listener) {
+        if (mTarget == null)
+            this.mOnStateChangedListenerTmp = listener;
+        else mTarget.setOnStateChangedListener(listener);
     }
 
     @Override
@@ -77,11 +85,13 @@ final class Helper implements Contract.Helper {
             }
             mTarget = new Boss((Contract.Panel) childPanel);
         }
-        mTarget.setPanelListener(mListenerTmp);
+        mTarget.setup(mPanelListenerTmp);
+        mTarget.setOnStateChangedListener(mOnStateChangedListenerTmp);
         mTarget.setup(activity);
 
         // Clear it
-        mListenerTmp = null;
+        mPanelListenerTmp = null;
+        mOnStateChangedListenerTmp = null;
         mView = null;
         mAttribute = null;
     }
@@ -91,8 +101,11 @@ final class Helper implements Contract.Helper {
         private final Rect mLastFrame = new Rect();
         private final Contract.Panel mSubPanel;
         private View mRootView;
-        private AirPanel.Listener mListener;
+        private AirPanel.PanelListener mPanelListener;
+        private AirPanel.OnStateChangedListener mOnStateChangedListener;
         private int mDisplayHeight;
+        private boolean mIsOpenPanel;
+        private boolean mIsOpenSoftKeyboard;
 
         private Boss(Contract.Panel subPanel) {
             this.mSubPanel = subPanel;
@@ -102,16 +115,18 @@ final class Helper implements Contract.Helper {
         public void openPanel() {
             if (isOpenSoftKeyboard()) {
                 mShowPanelIntention.set(true);
-                if (mListener != null)
-                    mListener.requestHideSoftKeyboard();
+                if (mPanelListener != null)
+                    mPanelListener.requestHideSoftKeyboard();
             } else {
                 mSubPanel.openPanel();
+                notifyStateChanged();
             }
         }
 
         @Override
         public void closePanel() {
             mSubPanel.closePanel();
+            notifyStateChanged();
         }
 
         @Override
@@ -154,6 +169,8 @@ final class Helper implements Contract.Helper {
                 // If want to show panel, we need call it
                 if (mShowPanelIntention.getAndSet(false))
                     openPanel();
+                else
+                    notifyStateChanged();
             } else if (bottomChangeSize < 0) {
                 closePanel();
             }
@@ -191,13 +208,36 @@ final class Helper implements Contract.Helper {
 
         @Override
         public void requestHideSoftKeyboard() {
-            if (mListener != null)
-                mListener.requestHideSoftKeyboard();
+            if (mPanelListener != null)
+                mPanelListener.requestHideSoftKeyboard();
         }
 
         @Override
-        public void setPanelListener(AirPanel.Listener listener) {
-            this.mListener = listener;
+        public void setup(AirPanel.PanelListener panelListener) {
+            this.mPanelListener = panelListener;
+        }
+
+        @Override
+        public void setOnStateChangedListener(AirPanel.OnStateChangedListener listener) {
+            this.mOnStateChangedListener = listener;
+        }
+
+        private void notifyStateChanged() {
+            AirPanel.OnStateChangedListener listener = mOnStateChangedListener;
+            if (listener == null)
+                return;
+
+            boolean isOpenPanel = mSubPanel.isOpen();
+            if (isOpenPanel != mIsOpenPanel) {
+                mIsOpenPanel = isOpenPanel;
+                listener.onPanelStateChanged(isOpenPanel);
+            }
+
+            boolean isOpenSoftKeyboard = isOpenSoftKeyboard();
+            if (isOpenSoftKeyboard != mIsOpenSoftKeyboard) {
+                mIsOpenSoftKeyboard = isOpenSoftKeyboard;
+                listener.onSoftKeyboardStateChanged(isOpenSoftKeyboard);
+            }
         }
     }
 
@@ -265,7 +305,12 @@ final class Helper implements Contract.Helper {
         }
 
         @Override
-        public void setPanelListener(AirPanel.Listener listener) {
+        public void setup(AirPanel.PanelListener panelListener) {
+            // None do
+        }
+
+        @Override
+        public void setOnStateChangedListener(AirPanel.OnStateChangedListener listener) {
             // None do
         }
     }
