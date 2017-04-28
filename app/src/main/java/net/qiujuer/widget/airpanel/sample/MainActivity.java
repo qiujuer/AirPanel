@@ -1,9 +1,14 @@
 package net.qiujuer.widget.airpanel.sample;
 
+import android.content.Context;
+import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import net.qiujuer.widget.airpanel.AirPanel;
@@ -21,7 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
         mContent = (EditText) findViewById(R.id.edit_content);
 
+        // Open log
+        Util.DEBUG = true;
         mPanelBoss = (AirPanel.Boss) findViewById(R.id.lay_container);
+        // You must do this, to call Util.hideKeyboard(your input edit text view);
         mPanelBoss.setup(new AirPanel.PanelListener() {
             @Override
             public void requestHideSoftKeyboard() {
@@ -48,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        getNavigationBarSize(this);
     }
 
     private void onFaceClick() {
@@ -65,5 +74,51 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+
+    public static Point getNavigationBarSize(Context context) {
+        Point appUsableSize = getAppUsableScreenSize(context);
+        Point realScreenSize = getRealScreenSize(context);
+
+        // navigation bar on the right
+        if (appUsableSize.x < realScreenSize.x) {
+            return new Point(realScreenSize.x - appUsableSize.x, appUsableSize.y);
+        }
+
+        // navigation bar at the bottom
+        if (appUsableSize.y < realScreenSize.y) {
+            return new Point(appUsableSize.x, realScreenSize.y - appUsableSize.y);
+        }
+
+        // navigation bar is not present
+        return new Point();
+    }
+
+    public static Point getAppUsableScreenSize(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size;
+    }
+
+    public static Point getRealScreenSize(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point size = new Point();
+
+        if (Build.VERSION.SDK_INT >= 17) {
+            display.getRealSize(size);
+        } else {
+            try {
+                size.x = (Integer) Display.class.getMethod("getRawWidth").invoke(display);
+                size.y = (Integer) Display.class.getMethod("getRawHeight").invoke(display);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return size;
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="airPanelMinHeight">86dp</dimen>
-    <dimen name="airPanelMaxHeight">280dp</dimen>
+    <dimen name="airPanelMaxHeight">300dp</dimen>
 </resources>

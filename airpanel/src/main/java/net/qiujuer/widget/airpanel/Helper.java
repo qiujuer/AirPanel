@@ -290,13 +290,16 @@ final class Helper implements Contract.Helper {
         }
 
         @Override
-        public void adjustPanelHeight(int height) {
-            height = Math.min(height, mAttribute.panelMaxHeight);
-            height = Math.max(height, mAttribute.panelMinHeight);
+        public void adjustPanelHeight(final int requestHeight) {
+            final int max = mAttribute.panelMaxHeight;
+            final int min = mAttribute.panelMinHeight;
+            int height = Math.min(requestHeight, max);
+            height = Math.max(height, min);
             if (height != mPanelHeight) {
                 mPanelHeight = height;
                 Util.updateLocalPanelHeight(mView.getContext(), height);
             }
+            Util.log("adjustPanelHeight:in:%s, max:%s, min:%s, cur:%s", requestHeight, max, min, mPanelHeight);
         }
 
         @Override

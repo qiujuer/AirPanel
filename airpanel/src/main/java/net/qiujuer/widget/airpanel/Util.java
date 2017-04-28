@@ -13,7 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 
 @SuppressWarnings("WeakerAccess")
 public final class Util {
-    public static boolean DEBUG = true;//BuildConfig.DEBUG;
+    public static boolean DEBUG = BuildConfig.DEBUG;
 
     public static void log(String format, Object... args) {
         if (DEBUG)
