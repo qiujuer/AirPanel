@@ -17,9 +17,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mContent = (EditText) findViewById(R.id.edit_content);
+        mContent = findViewById(R.id.edit_content);
 
-        mAirPanel = (AirPanel) findViewById(R.id.airPanelLayout);
+        mAirPanel = findViewById(R.id.airPanelLayout);
         mAirPanel.setPanelListener(new AirPanel.Listener() {
             @Override
             public void requestHideSoftKeyboard() {
