@@ -3,6 +3,7 @@ package net.qiujuer.widget.airpanel;
 import android.app.Activity;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Build;
 import android.view.Display;
 import android.view.View;
 
@@ -179,19 +180,14 @@ final class Helper implements Contract.Helper {
         @Override
         public void setup(Activity activity) {
             mRootView = activity.getWindow().getDecorView();
-            /*
-            mRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    Util.log("onGlobalLayout");
-                }
-            });
-            */
-
             // Get DisplayHeight
             Display display = activity.getWindowManager().getDefaultDisplay();
             Point point = new Point();
-            display.getSize(point);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                display.getRealSize(point);
+            } else {
+                display.getSize(point);
+            }
             mDisplayHeight = point.y;
 
             Util.log("setup mDisplayHeight:%s point:%s", mDisplayHeight, point.toString());
