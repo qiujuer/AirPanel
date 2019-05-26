@@ -3,7 +3,6 @@ package net.qiujuer.widget.airpanel;
 import android.app.Activity;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.os.Build;
 import android.view.Display;
 import android.view.View;
 
@@ -28,14 +27,16 @@ final class Helper implements Contract.Helper {
 
     @Override
     public void openPanel() {
-        if (mTarget != null)
+        if (mTarget != null) {
             mTarget.openPanel();
+        }
     }
 
     @Override
     public void closePanel() {
-        if (mTarget != null)
+        if (mTarget != null) {
             mTarget.closePanel();
+        }
     }
 
     @Override
@@ -45,28 +46,30 @@ final class Helper implements Contract.Helper {
 
     @Override
     public void setup(AirPanel.PanelListener panelListener) {
-        if (mTarget == null)
+        if (mTarget == null) {
             this.mPanelListenerTmp = panelListener;
-        else mTarget.setup(panelListener);
+        } else mTarget.setup(panelListener);
     }
 
     @Override
     public void setOnStateChangedListener(AirPanel.OnStateChangedListener listener) {
-        if (mTarget == null)
+        if (mTarget == null) {
             this.mOnStateChangedListenerTmp = listener;
-        else mTarget.setOnStateChangedListener(listener);
+        } else mTarget.setOnStateChangedListener(listener);
     }
 
     @Override
     public void adjustPanelHeight(int heightMeasureSpec) {
-        if (mTarget != null)
+        if (mTarget != null) {
             mTarget.adjustPanelHeight(heightMeasureSpec);
+        }
     }
 
     @Override
     public void requestHideSoftKeyboard() {
-        if (mTarget != null)
+        if (mTarget != null) {
             mTarget.requestHideSoftKeyboard();
+        }
     }
 
     @Override
@@ -116,8 +119,9 @@ final class Helper implements Contract.Helper {
         public void openPanel() {
             if (isOpenSoftKeyboard()) {
                 mShowPanelIntention.set(true);
-                if (mPanelListener != null)
+                if (mPanelListener != null) {
                     mPanelListener.requestHideSoftKeyboard();
+                }
             } else {
                 mSubPanel.openPanel();
                 notifyStateChanged();
@@ -168,10 +172,11 @@ final class Helper implements Contract.Helper {
                 mSubPanel.adjustPanelHeight(bottomChangeSize);
 
                 // If want to show panel, we need call it
-                if (mShowPanelIntention.getAndSet(false))
+                if (mShowPanelIntention.getAndSet(false)) {
                     openPanel();
-                else
+                } else {
                     notifyStateChanged();
+                }
             } else if (bottomChangeSize < 0) {
                 closePanel();
             }
@@ -183,13 +188,8 @@ final class Helper implements Contract.Helper {
             // Get DisplayHeight
             Display display = activity.getWindowManager().getDefaultDisplay();
             Point point = new Point();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                display.getRealSize(point);
-            } else {
-                display.getSize(point);
-            }
+            display.getSize(point);
             mDisplayHeight = point.y;
-
             Util.log("setup mDisplayHeight:%s point:%s", mDisplayHeight, point.toString());
         }
 
@@ -199,13 +199,14 @@ final class Helper implements Contract.Helper {
         }
 
         private boolean isOpenSoftKeyboard() {
-            return mLastFrame.bottom != 0 && mLastFrame.bottom != mDisplayHeight;
+            return mLastFrame.bottom != 0 && mLastFrame.height() != mDisplayHeight;
         }
 
         @Override
         public void requestHideSoftKeyboard() {
-            if (mPanelListener != null)
+            if (mPanelListener != null) {
                 mPanelListener.requestHideSoftKeyboard();
+            }
         }
 
         @Override
@@ -220,8 +221,9 @@ final class Helper implements Contract.Helper {
 
         private void notifyStateChanged() {
             AirPanel.OnStateChangedListener listener = mOnStateChangedListener;
-            if (listener == null)
+            if (listener == null) {
                 return;
+            }
 
             boolean isOpenPanel = mSubPanel.isOpen();
             if (isOpenPanel != mIsOpenPanel) {
