@@ -39,3 +39,4 @@ captures/
 *.jks
 
 .idea/
+.DS_Store
