@@ -1,10 +1,12 @@
 package net.qiujuer.widget.airpanel;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -186,11 +188,12 @@ final class Helper implements Contract.Helper {
         public void setup(Activity activity) {
             mRootView = activity.getWindow().getDecorView();
             // Get DisplayHeight
-            Display display = activity.getWindowManager().getDefaultDisplay();
-            Point point = new Point();
-            display.getSize(point);
-            mDisplayHeight = point.y;
-            Util.log("setup mDisplayHeight:%s point:%s", mDisplayHeight, point.toString());
+            WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
+            Display display = windowManager.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            mDisplayHeight = size.y;
+            Util.log("setup mDisplayHeight:%s point:%s", mDisplayHeight, size.toString());
         }
 
         @Override
@@ -199,7 +202,9 @@ final class Helper implements Contract.Helper {
         }
 
         private boolean isOpenSoftKeyboard() {
-            return mLastFrame.bottom != 0 && mLastFrame.height() != mDisplayHeight;
+            return mLastFrame.bottom != 0
+                    && mLastFrame.bottom != mDisplayHeight
+                    && mLastFrame.height() != mDisplayHeight;
         }
 
         @Override
