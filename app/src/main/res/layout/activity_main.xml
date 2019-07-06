@@ -8,12 +8,13 @@
     tools:context="net.qiujuer.widget.airpanel.sample.MainActivity">
 
     <TextView
+        android:id="@+id/txt_tips"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center"
+        android:layout_margin="@dimen/len_16"
         android:layout_weight="1"
-        android:gravity="center"
-        android:text="@string/txt_content" />
+        android:gravity="center" />
 
     <LinearLayout
         android:id="@+id/lay_option"
