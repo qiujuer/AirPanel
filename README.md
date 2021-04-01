@@ -3,7 +3,7 @@ Help soft keyboard and face panel switch.
 
 **gradle**
 ```
-implementation 'net.qiujuer.widget:airpanel:1.4.0'
+implementation 'net.qiujuer.widget:airpanel:1.5.0'
 ```
 
 # Picture
