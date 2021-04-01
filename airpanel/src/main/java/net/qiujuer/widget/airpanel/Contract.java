@@ -1,6 +1,7 @@
 package net.qiujuer.widget.airpanel;
 
 import android.app.Activity;
+import android.view.View;
 
 /**
  * @author qiujuer Email:qiujuer@live.cn
@@ -15,6 +16,6 @@ interface Contract extends AirPanel.Boss {
     interface Helper extends Panel, AirPanel.PanelListener {
         int calculateHeightMeasureSpec(int heightMeasureSpec);
 
-        void setup(Activity activity);
+        void setup(View hostView);
     }
 }

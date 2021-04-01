@@ -46,7 +46,7 @@ public class AirPanelFrameLayout extends FrameLayout implements Contract.Panel {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (!isInEditMode())
-            mDelegate.setup((Activity) getContext());
+            mDelegate.setup(this);
     }
 
     @Override

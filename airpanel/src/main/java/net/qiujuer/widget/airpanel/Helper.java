@@ -1,11 +1,11 @@
 package net.qiujuer.widget.airpanel;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -80,7 +80,7 @@ final class Helper implements Contract.Helper {
     }
 
     @Override
-    public void setup(Activity activity) {
+    public void setup(View hostView) {
         if (mView.getId() == R.id.airPanelSubLayout) {
             mTarget = new Sub(mView, mAttribute);
         } else {
@@ -93,7 +93,7 @@ final class Helper implements Contract.Helper {
         }
         mTarget.setup(mPanelListenerTmp);
         mTarget.setOnStateChangedListener(mOnStateChangedListenerTmp);
-        mTarget.setup(activity);
+        mTarget.setup(hostView);
 
         // Clear it
         mPanelListenerTmp = null;
@@ -109,9 +109,11 @@ final class Helper implements Contract.Helper {
         private View mRootView;
         private AirPanel.PanelListener mPanelListener;
         private AirPanel.OnStateChangedListener mOnStateChangedListener;
-        private int mDisplayHeight;
+        private int mDisplayHeightWithInsetBottom;
+        private int mLastWindowInsetBottom;
         private boolean mIsOpenPanel;
         private boolean mIsOpenSoftKeyboard;
+
 
         private Boss(Contract.Panel subPanel) {
             this.mSubPanel = subPanel;
@@ -146,13 +148,26 @@ final class Helper implements Contract.Helper {
             // Only update frame values
             updateFrameSize();
 
-            // Con't change it
+            // Can't change it
             return heightMeasureSpec;
+        }
+
+        private int getWindowStableInsetBottom() {
+            if (mRootView == null) {
+                return 0;
+            }
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                final WindowInsets rootWindowInsets = mRootView.getRootWindowInsets();
+                return rootWindowInsets.getStableInsetBottom();
+            }
+            return 0;
         }
 
         private void updateFrameSize() {
             if (mRootView != null) {
-                Rect frame = new Rect();
+                mLastWindowInsetBottom = getWindowStableInsetBottom();
+
+                final Rect frame = new Rect();
                 mRootView.getWindowVisibleDisplayFrame(frame);
 
                 int bottomChangeSize = 0;
@@ -185,15 +200,20 @@ final class Helper implements Contract.Helper {
         }
 
         @Override
-        public void setup(Activity activity) {
-            mRootView = activity.getWindow().getDecorView();
+        public void setup(View hostView) {
+            mRootView = hostView.getRootView();
+            if (mRootView == null) {
+                Util.log("setup error with root null!");
+                return;
+            }
             // Get DisplayHeight
-            WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
-            Display display = windowManager.getDefaultDisplay();
-            Point size = new Point();
+
+            final WindowManager windowManager = (WindowManager) hostView.getContext().getSystemService(Context.WINDOW_SERVICE);
+            final Display display = windowManager.getDefaultDisplay();
+            final Point size = new Point();
             display.getSize(size);
-            mDisplayHeight = size.y;
-            Util.log("setup mDisplayHeight:%s point:%s", mDisplayHeight, size.toString());
+            mDisplayHeightWithInsetBottom = size.y + getWindowStableInsetBottom();
+            Util.log("setup mDisplayHeight:%s point:%s", mDisplayHeightWithInsetBottom, size.toString());
         }
 
         @Override
@@ -203,8 +223,8 @@ final class Helper implements Contract.Helper {
 
         private boolean isOpenSoftKeyboard() {
             return mLastFrame.bottom != 0
-                    && mLastFrame.bottom != mDisplayHeight
-                    && mLastFrame.height() != mDisplayHeight;
+                    && mLastFrame.bottom + mLastWindowInsetBottom != mDisplayHeightWithInsetBottom
+                    && mLastFrame.height() + mLastWindowInsetBottom != mDisplayHeightWithInsetBottom;
         }
 
         @Override
@@ -288,7 +308,7 @@ final class Helper implements Contract.Helper {
         }
 
         @Override
-        public void setup(Activity activity) {
+        public void setup(View hostView) {
             // None do
         }
 
