@@ -20,9 +20,4 @@ android {
     }
 }
 
-dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
-}
-
-
 apply from: '../script/gradle-jcenter-push.gradle'
