@@ -28,13 +28,7 @@ allprojects {
     }
 }
 
-/*
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-*/
-
-def static int getVersionCode() {
+static int getVersionCode() {
     def date = new Date()
     def formattedDate = date.format('yyMMddHHmm')
     return formattedDate as int
