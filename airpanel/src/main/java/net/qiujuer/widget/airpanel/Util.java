@@ -35,7 +35,7 @@ public final class Util {
     }
 
     static int getDefaultPanelHeight(Context context, AirAttribute attribute) {
-        int defaultHeight = (int) ((attribute.panelMaxHeight + attribute.panelMinHeight) / 2.0f + 0.5f);
+        int defaultHeight = (int) ((attribute.panelMaxHeight + attribute.panelMinHeight) * 0.5f);
         defaultHeight = PanelSharedPreferences.get(context, defaultHeight);
         return defaultHeight;
     }
@@ -49,10 +49,10 @@ public final class Util {
         private final static String KEY_PANEL_HEIGHT = "panelHeight";
         private volatile static SharedPreferences SP;
 
-        public static boolean save(final Context context, final int keyboardHeight) {
-            return sp(context).edit()
+        public static void save(final Context context, final int keyboardHeight) {
+            sp(context).edit()
                     .putInt(KEY_PANEL_HEIGHT, keyboardHeight)
-                    .commit();
+                    .apply();
         }
 
         private static SharedPreferences sp(final Context context) {
